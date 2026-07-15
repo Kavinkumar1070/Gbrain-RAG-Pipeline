@@ -11,6 +11,13 @@ CREATE TABLE IF NOT EXISTS entities (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- fixed enum of entity kinds, stored as constrained TEXT (not a Postgres ENUM
+-- type) so adding a new kind later is just an ALTER ... DROP/ADD CONSTRAINT,
+-- not a type migration. NULL allowed for stub entities created via wikilinks
+-- (step 8) that haven't been typed yet.
+ALTER TABLE entities ADD COLUMN IF NOT EXISTS entity_type TEXT
+    CHECK (entity_type IN ('person', 'company', 'product', 'place', 'event', 'concept'));
+
 -- pages: one per entity, mirrors .md source of truth (ingest step 5-7)
 CREATE TABLE IF NOT EXISTS pages (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -33,7 +40,7 @@ CREATE TABLE IF NOT EXISTS facts (
 CREATE TABLE IF NOT EXISTS timeline_entries (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     page_id UUID REFERENCES pages(id) ON DELETE CASCADE,
-    event_date DATE,
+    event_date TEXT,
     event TEXT NOT NULL
 );
 

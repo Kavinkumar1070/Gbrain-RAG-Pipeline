@@ -62,4 +62,4 @@ if __name__ == "__main__":
 
     raw = extract(sys.argv[1])
     print(f"--- Extracted {len(raw)} chars ---\n")
-    print(raw[:200])
+    print(raw[:2000])
