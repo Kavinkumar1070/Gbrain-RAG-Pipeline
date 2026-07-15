@@ -1,14 +1,14 @@
 ---
 entity: Maria Chen
 entity_id: 6819b1ad-f9f0-4fe2-9f20-29dbb9f92b2b
-updated_at: 2026-07-15T13:17:48.826658+00:00
+updated_at: 2026-07-15T13:20:55.234473+00:00
 ---
 
 # Maria Chen
 
 ## Compiled Truth
 
-This document is an executive biography of Maria Chen, founder and CEO of Nexora Analytics. It highlights her prior engineering leadership experience, academic background, leadership role in shaping Nexora Analytics' product and fundraising, and collaboration with co-founder David Okoro on the Nexora Insight Platform. It also notes her public speaking, podcast appearance, and 2024 recognition by Austin Business Journal.
+This document is an executive bio of Maria Chen, founder and CEO of Nexora Analytics. It outlines her prior engineering leadership experience, her academic background, and her leadership role in shaping Nexora Analytics's product and fundraising efforts. It also highlights her public speaking, podcast appearance, and 2024 recognition by Austin Business Journal.
 
 ## Facts
 
@@ -24,20 +24,19 @@ This document is an executive biography of Maria Chen, founder and CEO of Nexora
 - Maria Chen holds a Bachelor of Engineering from the University of Toronto.
 - Maria Chen completed her Bachelor of Engineering from the University of Toronto in 2011.
 - As Chief Executive Officer, Maria Chen leads product strategy at Nexora Analytics.
-- As Chief Executive Officer, Maria Chen leads fundraising for Nexora Analytics.
+- As Chief Executive Officer, Maria Chen leads fundraising at Nexora Analytics.
 - Maria Chen worked closely with David Okoro to build the Nexora Insight Platform.
-- David Okoro is the co-founder of Nexora Analytics.
 - David Okoro is the Chief Technology Officer of Nexora Analytics.
 - The Nexora Insight Platform is the flagship real-time analytics product of Nexora Analytics.
-- In November 2024, Maria Chen led Nexora Analytics' Series B fundraising round.
-- Nexora Analytics' Series B fundraising round was 42 million dollars.
-- Horizon Capital funded Nexora Analytics' Series B round.
+- In November 2024, Maria Chen led Nexora Analytics's Series B fundraising round.
+- Nexora Analytics's Series B fundraising round was 42 million dollars.
+- Horizon Capital funded Nexora Analytics's Series B fundraising round.
 - Maria Chen spoke at the Supply Chain Innovation Summit in Chicago in September 2024.
 - At the Supply Chain Innovation Summit, Maria Chen presented on real-time graph-based retrieval for logistics forecasting.
 - Maria Chen has been a guest on the Data Intelligence Podcast.
 - Priya Raman hosts the Data Intelligence Podcast.
 - Maria Chen was named to the Forty Under Forty list by Austin Business Journal in 2024.
-- Austin Business Journal recognized Maria Chen for her contributions to the enterprise AI sector in Texas.
+- The Austin Business Journal's Forty Under Forty list recognized Maria Chen's contributions to the enterprise AI sector in Texas.
 
 ## Timeline
 
@@ -45,8 +44,8 @@ This document is an executive biography of Maria Chen, founder and CEO of Nexora
 - 2013: Maria Chen completed a Master of Science in Computer Science from the University of Waterloo.
 - 2021: Maria Chen started Nexora Analytics in Austin, Texas.
 - 2024-09: Maria Chen spoke at the Supply Chain Innovation Summit in Chicago and presented on real-time graph-based retrieval for logistics forecasting.
-- 2024-11: Maria Chen led Nexora Analytics' 42 million dollar Series B fundraising round from Horizon Capital.
-- 2024: Austin Business Journal named Maria Chen to its Forty Under Forty list.
+- 2024-11: Maria Chen led Nexora Analytics's 42 million dollar Series B fundraising round from Horizon Capital.
+- 2024: Maria Chen was named to the Forty Under Forty list by Austin Business Journal.
 
 ## Related
 
