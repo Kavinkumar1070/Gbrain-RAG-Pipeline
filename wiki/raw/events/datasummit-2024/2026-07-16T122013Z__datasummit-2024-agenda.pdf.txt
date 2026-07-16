@@ -1,0 +1,22 @@
+DataSummit 2024 — Speaker Program
+San Francisco, CA · October 14-15, 2024
+About DataSummit
+DataSummit is an annual two-day conference for data and analytics leaders, held each year in San
+Francisco, California. The 2024 edition drew over 1,200 attendees across enterprise data teams,
+analytics vendors, and investors.
+Keynote: Maria Chen, Nexora
+Maria Chen, founder of Nexora, delivered the day-two keynote on October 15, 2024, titled 'Analytics
+Without the Analyst.' Chen discussed how the Nexora Insight Platform has evolved since its 2022
+launch, and previewed forecasting features the company gained through its March 2024 acquisition of
+Nexora Analytics.
+During the Q&A, Chen confirmed Nexora's new partnership with CloudScale Systems, announced the
+previous month, and said the integration would ship to CloudScale customers in early 2025.
+Session Table
+Time Session Speaker
+9:00 AM Opening Remarks DataSummit Organizers
+10:30 AM Analytics Without the Analyst (Keynote) Maria Chen, Nexora
+1:00 PM Scaling Data Teams CloudScale Systems panel
+3:30 PM Forecasting at Mid-Market Scale Nexora engineering team
+Venue
+All sessions were held at the Moscone Center in San Francisco, California, the same venue
+DataSummit has used since 2021.
