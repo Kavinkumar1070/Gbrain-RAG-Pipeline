@@ -1,0 +1,23 @@
+Nexora Insight Platform — Product Datasheet
+Overview
+The Nexora Insight Platform is the flagship product of Nexora Analytics, an enterprise AI company
+founded by Maria Chen in 2021. The platform provides real-time analytics and disruption forecasting for
+supply chain and logistics operators.
+Architecture
+The Nexora Insight Platform combines streaming data ingestion with a hybrid retrieval architecture that
+blends vector search, keyword search, and graph traversal. This architecture was designed under the
+direction of David Okoro, Chief Technology Officer of Nexora Analytics.
+The platform ingests data from over 40 supported logistics data sources, including GPS telemetry
+feeds, customs filings, and weather disruption APIs.
+Deployment
+The Nexora Insight Platform launched publicly in June 2022. A major architecture upgrade, internally
+called Project Meridian, shipped in August 2024, adding multi-modal retrieval support for image-based
+cargo inspection reports.
+Customers
+As of January 2025, the Nexora Insight Platform is used by over 120 enterprise customers, including
+three Fortune 500 logistics companies. Reference customers include Falcon Freight and Meridian
+Shipping Co.
+Competitive Landscape
+The Nexora Insight Platform competes with products from Fathom Systems and Ledger Grid. Nexora
+Analytics' internal positioning emphasizes real-time graph-based retrieval as its key differentiator
+against competitors' batch-processing approaches.
