@@ -17,7 +17,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
-from steps.llm_pass import ExtractedPage
+from steps.llm_pass import ExtractedPage, TimelineEvent
 from steps.brainops import BrainOpsResult
 
 load_dotenv()
@@ -49,11 +49,32 @@ class Page:
     timeline: list  # list of TimelineEvent
     wikilinks: list[str]
     updated_at: str
+    aliases: list[str] = field(default_factory=list)
 
 
 def _slugify(name: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
     return slug
+
+
+# gbrain convention: one type-plural directory per entity_type, filename is
+# the canonical slug (see github.com/garrytan/gbrain docs/GBRAIN_RECOMMENDED_SCHEMA.md
+# — "People: first-last.md ... Companies: company-name.md ... the filename IS
+# the identity"). Untyped stub entities (created via wikilinks, step 8, before
+# they're ever ingested directly) have no entity_type yet, so they land in
+# "unfiled/" until a direct ingest backfills the type — see the TODO below.
+_TYPE_FOLDERS = {
+    "person": "people",
+    "company": "companies",
+    "product": "products",
+    "place": "places",
+    "event": "events",
+    "concept": "concepts",
+}
+
+
+def _type_folder(entity_type: str | None) -> str:
+    return _TYPE_FOLDERS.get(entity_type, "unfiled")
 
 
 def _client() -> AzureOpenAI:
@@ -98,20 +119,45 @@ def _dedupe_facts(existing_facts: list[str], new_facts: list[str]) -> list[str]:
     return merged
 
 
+def _dedupe_timeline(
+    existing_timeline: list[tuple[str | None, str]], new_timeline: list[TimelineEvent]
+) -> list[TimelineEvent]:
+    """Same case-insensitive exact-match dedup as _dedupe_facts, keyed on
+    (date, event text) so the same event reported by two source docs doesn't
+    duplicate. existing_timeline comes from brainops as raw (date, event)
+    tuples; new_timeline is this run's ExtractedPage.timeline."""
+    seen = {(date, event.strip().lower()) for date, event in existing_timeline}
+    merged = [TimelineEvent(date=date, event=event) for date, event in existing_timeline]
+    for t in new_timeline:
+        key = (t.date, t.event.strip().lower())
+        if key not in seen:
+            merged.append(t)
+            seen.add(key)
+    return merged
+
+
 def run(extracted: ExtractedPage, brain_result: BrainOpsResult) -> Page:
-    file_path = brain_result.file_path or f"wiki/{_slugify(brain_result.entity_name)}.md"
+    file_path = brain_result.file_path or (
+        f"wiki/{_type_folder(brain_result.entity_type)}/{_slugify(brain_result.entity_name)}.md"
+    )
 
     if brain_result.exists and brain_result.compiled_truth:
         compiled_truth = _merge_compiled_truth(
             brain_result.compiled_truth, extracted.take, extracted.facts
         )
-        # existing facts aren't passed into this step yet (step 4 only
-        # returns compiled_truth) — dedup against new_facts only for now.
-        # TODO: pass existing facts through brainops once facts table read is wired.
-        facts = extracted.facts
     else:
         compiled_truth = extracted.take
+
+    # merge against what's actually on record, not just this run's new facts
+    # -- previously this only deduped extracted.facts against itself, so
+    # re-ingesting a related doc that didn't repeat every prior fact/event
+    # silently dropped them once postgres_sync did its delete+reinsert.
+    if brain_result.exists:
+        facts = _dedupe_facts(brain_result.existing_facts or [], extracted.facts)
+        timeline = _dedupe_timeline(brain_result.existing_timeline or [], extracted.timeline)
+    else:
         facts = extracted.facts
+        timeline = extracted.timeline
 
     return Page(
         entity_id=brain_result.entity_id,
@@ -119,25 +165,36 @@ def run(extracted: ExtractedPage, brain_result: BrainOpsResult) -> Page:
         file_path=file_path,
         compiled_truth=compiled_truth,
         facts=facts,
-        timeline=extracted.timeline,
+        timeline=timeline,
         wikilinks=extracted.wikilinks,
         updated_at=datetime.now(timezone.utc).isoformat(),
+        aliases=brain_result.aliases or [],
     )
 
 
 def render_markdown(page: Page) -> str:
-    """Render the Page as a .md file with YAML frontmatter — this becomes the git source of truth (step 6)."""
-    fm_lines = [
-        "---",
-        f"entity: {page.entity_name}",
-        f"entity_id: {page.entity_id}",
-        f"updated_at: {page.updated_at}",
-        "---",
-        "",
-    ]
+    """
+    Render the Page as a .md file with YAML frontmatter — this becomes the
+    git source of truth (step 6).
+
+    Structural contract (matches gbrain): everything above the `---` body
+    divider is the always-current synthesis (Compiled Truth) — it gets
+    rewritten wholesale on every merge (step 5). Everything below the
+    divider is the append-only evidence log (Facts, Timeline, Related) —
+    individual entries are added over time and never rewritten, only grown.
+    Keep this shape if you touch the section ordering below.
+    """
+    fm_lines = ["---", f"entity: {page.entity_name}", f"entity_id: {page.entity_id}"]
+    if page.aliases:
+        fm_lines.append("aliases:")
+        fm_lines += [f"  - {a}" for a in page.aliases]
+    fm_lines += [f"updated_at: {page.updated_at}", "---", ""]
 
     body = [f"# {page.entity_name}", ""]
     body += ["## Compiled Truth", "", page.compiled_truth, ""]
+
+    # --- hard divider: above = current synthesis, below = evidence log ---
+    body += ["---", ""]
 
     body += ["## Facts", ""]
     for f in page.facts:

@@ -17,7 +17,7 @@ def main():
     with open("init.sql") as f:
         schema_sql = f.read()
 
-    with psycopg.connect(DATABASE_URL, autocommit=True) as conn:
+    with psycopg.connect(DATABASE_URL, autocommit=True, prepare_threshold=None) as conn:
         with conn.cursor() as cur:
             print("Applying schema...")
             cur.execute(schema_sql)

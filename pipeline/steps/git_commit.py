@@ -8,8 +8,10 @@ and whether there's anything new to chunk/embed, and so ingest.py can log honest
 instead of assuming every run produces a commit.
 """
 import hashlib
+import re
 import subprocess
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -32,6 +34,48 @@ def _repo_root(start: Path) -> Path:
     if result.returncode != 0:
         raise RuntimeError(f"Not inside a git repository (looked from {start}): {result.stderr.strip()}")
     return Path(result.stdout.strip())
+
+
+def save_raw_sidecar(
+    page_file_path: str,
+    raw_text: str,
+    source_file_name: str,
+    repo_root: Path | None = None,
+) -> str:
+    """
+    Persist the original extracted document text as a provenance sidecar,
+    so "why does the page say this?" can always be traced back to a source
+    document — gbrain's raw/ directory. One file per ingest run (never
+    overwritten), named by timestamp, so re-ingesting the same entity keeps
+    every prior source instead of losing it.
+
+    Mirrors page_file_path's location: "wiki/people/maria-chen.md" ->
+    "wiki/raw/people/maria-chen/2026-07-16T120000Z__source.txt"
+
+    Returns the relative path written. Committed to git alongside the page
+    so raw provenance travels with the same commit as the synthesis it fed.
+    """
+    repo_root = repo_root or _repo_root(Path.cwd())
+
+    stem = Path(page_file_path).stem  # e.g. "maria-chen"
+    parent = Path(page_file_path).parent  # e.g. "wiki/people"
+    raw_dir = parent.parent / "raw" / parent.name / stem if parent.name != "wiki" else parent / "raw" / stem
+    # normalize: "wiki/people" -> raw dir "wiki/raw/people/maria-chen"
+    raw_dir = Path(str(parent).replace("wiki", "wiki/raw", 1)) / stem
+
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M%SZ")
+    safe_source_name = re.sub(r"[^a-zA-Z0-9._-]+", "-", Path(source_file_name).name)
+    raw_rel_path = raw_dir / f"{timestamp}__{safe_source_name}.txt"
+
+    abs_path = repo_root / raw_rel_path
+    abs_path.parent.mkdir(parents=True, exist_ok=True)
+    abs_path.write_text(raw_text, encoding="utf-8")
+
+    add_result = _run_git(["add", str(raw_rel_path)], cwd=repo_root)
+    if add_result.returncode != 0:
+        raise RuntimeError(f"git add failed for raw sidecar: {add_result.stderr.strip()}")
+
+    return str(raw_rel_path)
 
 
 def commit_page(file_path: str, markdown_content: str, repo_root: Path | None = None) -> CommitResult:
