@@ -1,0 +1,16 @@
+Elena: Thanks everyone for jumping on. Sam, good to finally meet -- I'm Elena,
+CEO over at Quantum Labs. This is Raj, our Head of Engineering.
+
+Sam: Great to meet you both. I'm Sam Ostrow, I run integrations at Fenwick
+Robotics. We're looking at your sensor-fusion stack for our next assembly-line
+release.
+
+Raj: Happy to walk through it. We'd scope this as its own workstream -- I'll
+call it the Fenwick Integration project internally so we can track it
+separately from the core roadmap.
+
+Sam: Works for us. What's a realistic timeline?
+
+Raj: If we start next week, six to eight weeks to a working pilot.
+
+Elena: I'll have Raj send over a scoping doc by end of week.

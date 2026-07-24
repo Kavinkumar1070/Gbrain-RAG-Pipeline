@@ -1,0 +1,4 @@
+Raj Patel is Head of Engineering and co-founder of Quantum Labs. He owns
+the core sensor-fusion pipeline and personally reviews every release
+before it ships. Known internally for being conservative about timelines
+-- he'd rather under-promise on a scoping call than slip a committed date.

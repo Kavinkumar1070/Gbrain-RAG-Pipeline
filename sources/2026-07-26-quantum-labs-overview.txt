@@ -1,0 +1,15 @@
+Quantum Labs — Company Overview
+
+Quantum Labs builds real-time sensor-fusion software for industrial robotics.
+The company is based on a small, senior engineering team and has stayed heads-down
+on product until now.
+
+Elena Cho is CEO and co-founder. She previously led a perception team at a
+self-driving vehicle company for five years before starting Quantum Labs.
+
+Raj Patel is Head of Engineering and the second co-founder. He owns the core
+fusion pipeline and reviews every release personally before it ships.
+
+Meridian Capital invested in Quantum Labs' Series B round earlier this year.
+
+The company is currently around 12 people.

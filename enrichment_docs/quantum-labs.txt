@@ -1,0 +1,5 @@
+Quantum Labs builds real-time sensor-fusion software for industrial
+robotics. Around 12 people, senior-heavy engineering team. Closed a
+Series B round led by Meridian Capital. Currently expanding from a
+single core product into customer-specific integration projects,
+starting with Fenwick Robotics.
